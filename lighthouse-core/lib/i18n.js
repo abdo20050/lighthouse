@@ -43,6 +43,10 @@ const formats = {
   },
 };
 
+/**
+ * @param {string} msg
+ * @param {Record<string, *>} values
+ */
 function preprocessMessageValues(msg, values) {
   const parsed = MessageParser.parse(msg);
   // Replace all the bytes with KB
@@ -71,7 +75,7 @@ module.exports = {
       // fallback to the original english message if we couldn't find a message in the specified locale
       // better to have an english message than no message at all, in some number cases it won't even matter
       const messageForMessageFormat = localeStrings[lookupKey] || msg
-      // when using accented english, force the use of a different locale for numbers
+      // when using accented english, force the use of a different locale for number formatting
       const localeForMessageFormat = locale === 'en-XA' ? 'de-DE' : locale;
 
       const formatter = new MessageFormat(
@@ -86,6 +90,7 @@ module.exports = {
   },
   /** @param {string} newLocale */
   setLocale(newLocale) {
+    if (typeof newLocale === 'undefined') return;
     locale = newLocale;
   },
 };
